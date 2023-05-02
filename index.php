@@ -3,32 +3,47 @@
 $lists_str = file_get_contents("todo3.json");
 $json_lists = json_decode($lists_str, 1);
 
+function save_json($save) {
+    file_put_contents("todo3.json", json_encode($save));
+    header("Location: index.php");
+}
 
-if (isset($_GET["name"])){
+
+function create_list() {
     $submit = $_GET["name"];
     $json_lists[] = [
         "name" => $submit,
         "id" => $_GET["id"],
         "tasks" => [$_GET["task"]]
     ];
-    file_put_contents("todo3.json", json_encode($json_lists));
+    save_json($json_lists);
+}
+
+function delete_list($del, $list)  {
+
+    unset($list[$del]);
+    file_put_contents("todo3.json", json_encode($list));
     header("Location: index.php");
 }
 
-if (isset($_GET["delete"])){
-    $del = $_GET["delete"];
-    unset($json_lists[$del]);
-    file_put_contents("todo3.json", json_encode($json_lists));
-    header("Location: index.php");
-}
-
-if (isset($_GET["add_text"])) {
-    $add_task = $_GET["add_text"];
+function delete_task($del_task_arg) {
+    $add_task = $del_task_arg;
     $index = $_GET["add_index"];
     $json_lists[$index]["tasks"][] = $add_task;
 
-    file_put_contents("todo3.json", json_encode($json_lists));
-    header("Location: index.php");
+    save_json($json_lists);
+}
+if (isset($_GET["name"])){
+    create_list();
+
+}
+
+if (isset($_GET["delete"])){
+    delete_list($_GET["delete"], $json_lists);
+}
+
+if (isset($_GET["add_text"])) {
+    delete_task($_GET["add_text"]);
 }
 
 
@@ -37,8 +52,7 @@ if (isset($_GET["list_index_to_delete_task"])) {
     $index = $_GET["list_index_to_delete_task"];
     unset($json_lists[$index]["tasks"][$del_task]);
 
-    file_put_contents("todo3.json", json_encode($json_lists));
-    header("Location: index.php");
+    save_json($json_lists);
 }
 ?>
 
