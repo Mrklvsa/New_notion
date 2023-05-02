@@ -26,12 +26,19 @@ function delete_list($del, $list)  {
     header("Location: index.php");
 }
 
-function delete_task($del_task_arg) {
+function create_task($del_task_arg, $list) {
     $add_task = $del_task_arg;
     $index = $_GET["add_index"];
-    $json_lists[$index]["tasks"][] = $add_task;
+    $list[$index]["tasks"][] = $add_task;
 
-    save_json($json_lists);
+    save_json($list);
+}
+function delete_task($task_index, $list_index, $list) {
+
+//    $index = $_GET["list_index_to_delete_task"];
+    unset($list[$list_index]["tasks"][$task_index]);
+
+    save_json($list);
 }
 if (isset($_GET["name"])){
     create_list();
@@ -43,16 +50,16 @@ if (isset($_GET["delete"])){
 }
 
 if (isset($_GET["add_text"])) {
-    delete_task($_GET["add_text"]);
+    create_task($_GET["name"], $json_lists);
 }
 
 
 if (isset($_GET["list_index_to_delete_task"])) {
-    $del_task = $_GET["task_index_to_delete"];
-    $index = $_GET["list_index_to_delete_task"];
-    unset($json_lists[$index]["tasks"][$del_task]);
-
-    save_json($json_lists);
+    delete_task(
+            $_GET["task_index_to_delete"],
+            $_GET["list_index_to_delete_task"],
+            $json_lists
+    );
 }
 ?>
 
