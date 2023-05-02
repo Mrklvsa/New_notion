@@ -9,14 +9,14 @@ function save_json($save) {
 }
 
 
-function create_list() {
+function create_list($list) {
     $submit = $_GET["name"];
-    $json_lists[] = [
+    $list[] = [
         "name" => $submit,
         "id" => $_GET["id"],
         "tasks" => [$_GET["task"]]
     ];
-    save_json($json_lists);
+    save_json($list);
 }
 
 function delete_list($del, $list)  {
@@ -40,8 +40,31 @@ function delete_task($task_index, $list_index, $list) {
 
     save_json($list);
 }
+
+function create_todo_form($i) {
+    return '<form>
+    <input type="text" name="add_text">
+    <input name="add_index" value="'.$i.'" type="hidden">
+    <input type="submit" value="add_button">
+    
+</form>';
+}
+function delete_todo_form($i) {
+    return '<form>
+    <input name="delete" value="'.$i.'" type="hidden">
+    <input type="submit" value="delete">
+</form>'."<br>"."<br>"."<br>";
+}
+function delete_todo_task($i, $j) {
+    return '<form>
+        
+        <input name="list_index_to_delete_task" value="'.$i.'" type="hidden">
+        <input name="task_index_to_delete" value="'.$j.'" type="hidden">
+        <input type="submit" value="delete">
+            </form>';
+}
 if (isset($_GET["name"])){
-    create_list();
+    create_list($json_lists);
 
 }
 
@@ -50,7 +73,7 @@ if (isset($_GET["delete"])){
 }
 
 if (isset($_GET["add_text"])) {
-    create_task($_GET["name"], $json_lists);
+    create_task($_GET["add_text"], $json_lists);
 }
 
 
@@ -77,27 +100,14 @@ foreach ($json_lists as $i => $item) {
     echo $item["name"];
     foreach ($item["tasks"] as $j => $it)  {
         echo "<br> - ".$it;
-        $task_del = '<form>
-        
-        <input name="list_index_to_delete_task" value="'.$i.'" type="hidden">
-        <input name="task_index_to_delete" value="'.$j.'" type="hidden">
-        <input type="submit" value="delete">
-            </form>';
+        $task_del = delete_todo_task($i, $j);
         echo $task_del;
     }
 
-    $add_button = '<form>
-    <input type="text" name="add_text">
-    <input name="add_index" value="'.$i.'" type="hidden">
-    <input type="submit" value="add_button">
-    
-</form>';
+    $add_button = create_todo_form($i);
     echo $add_button;
     
-    $del_button = '<form>
-    <input name="delete" value="'.$i.'" type="hidden">
-    <input type="submit" value="delete">
-</form>';
-    echo $del_button."<br>"."<br>"."<br>";
+    $del_button = delete_todo_form($i);
+    echo $del_button;
 
 }
