@@ -1,1 +1,1 @@
-[{"name":"Warning","id":"1","tasks":["be carefull","and smart","Senior"]},{"name":"Paris ","id":"2 ","tasks":["city","roads","Vitebsk"]}]
+[{"name":"Warning","format":"num","id":"1","tasks":["be carefull","and smart","Senior"]},{"name":"Paris ","format":"*","id":"2 ","tasks":["city","roads","Vitebsk"]},{"name":"Exit","format":"Markirovaniy","id":"3","tasks":["RunRunRun","FASTER","Slower"]},{"name":"Classic","format":"num","id":"4","tasks":["Listen"]},{"name":"Steps","format":"*","id":"5","tasks":["Go","Position"]}]

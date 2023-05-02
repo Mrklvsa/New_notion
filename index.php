@@ -8,11 +8,12 @@ function save_json($save) {
     header("Location: index.php");
 }
 
-
 function create_list($list) {
     $submit = $_GET["name"];
+    $format = $_GET["num"];
     $list[] = [
         "name" => $submit,
+        "format" => $format,
         "id" => $_GET["id"],
         "tasks" => [$_GET["task"]]
     ];
@@ -85,9 +86,15 @@ if (isset($_GET["list_index_to_delete_task"])) {
     );
 }
 ?>
-
+<head>
+    <link rel="stylesheet" href="index.css">
+</head>
 <form>
     <input name="name" placeholder="Write, please">
+    <select name="num">
+        <option value="num">Numerovaniy</option>
+        <option value="*">Markirovaniy</option>
+    </select>
     <input name="id" placeholder="id">
     <input name="task" placeholder="task">
     <input type="submit" value="Push">
@@ -99,7 +106,12 @@ foreach ($json_lists as $i => $item) {
 
     echo $item["name"];
     foreach ($item["tasks"] as $j => $it)  {
-        echo "<br> - ".$it;
+        echo "<br> ";
+        if ($item["format"] === "num") {
+            echo ($j+1).".  ".$it;
+        } else {
+            echo "- ".$it;
+        }
         $task_del = delete_todo_task($i, $j);
         echo $task_del;
     }
