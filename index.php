@@ -35,10 +35,7 @@ function create_task($del_task_arg, $list) {
     save_json($list);
 }
 function delete_task($task_index, $list_index, $list) {
-
-//    $index = $_GET["list_index_to_delete_task"];
     unset($list[$list_index]["tasks"][$task_index]);
-
     save_json($list);
 }
 
